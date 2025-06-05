@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for calculator buttons */
+        .calc-button {
+            transition: all 0.2s ease;
+        }
+        .calc-button:hover {
+            transform: scale(1.05);
+        }
+        .calc-button:active {
+            transform: scale(0.95);
+        }
+        .display-screen {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-gray-800 rounded-2xl shadow-2xl p-6 w-full max-w-sm">
+        <!-- Calculator Display -->
+        <div class="bg-black rounded-lg p-4 mb-4">
+            <div id="display" class="display-screen text-white text-right text-3xl font-mono h-16 flex items-end justify-end overflow-hidden">
+                0
+            </div>
+        </div>
+
+        <!-- Calculator Buttons Grid -->
+        <div class="grid grid-cols-4 gap-3">
+            <!-- Row 1: Clear, +/-, %, ÷ -->
+            <button id="clear" class="calc-button bg-gray-500 hover:bg-gray-400 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                C
+            </button>
+            <button id="toggle-sign" class="calc-button bg-gray-500 hover:bg-gray-400 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                ±
+            </button>
+            <button id="percent" class="calc-button bg-gray-500 hover:bg-gray-400 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                %
+            </button>
+            <button id="divide" class="calc-button bg-orange-500 hover:bg-orange-400 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                ÷
+            </button>
+
+            <!-- Row 2: 7, 8, 9, × -->
+            <button id="seven" class="calc-button bg-gray-600 hover:bg-gray-500 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                7
+            </button>
+            <button id="eight" class="calc-button bg-gray-600 hover:bg-gray-500 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                8
+            </button>
+            <button id="nine" class="calc-button bg-gray-600 hover:bg-gray-500 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                9
+            </button>
+            <button id="multiply" class="calc-button bg-orange-500 hover:bg-orange-400 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                ×
+            </button>
+
+            <!-- Row 3: 4, 5, 6, - -->
+            <button id="four" class="calc-button bg-gray-600 hover:bg-gray-500 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                4
+            </button>
+            <button id="five" class="calc-button bg-gray-600 hover:bg-gray-500 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                5
+            </button>
+            <button id="six" class="calc-button bg-gray-600 hover:bg-gray-500 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                6
+            </button>
+            <button id="subtract" class="calc-button bg-orange-500 hover:bg-orange-400 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                -
+            </button>
+
+            <!-- Row 4: 1, 2, 3, + -->
+            <button id="one" class="calc-button bg-gray-600 hover:bg-gray-500 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                1
+            </button>
+            <button id="two" class="calc-button bg-gray-600 hover:bg-gray-500 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                2
+            </button>
+            <button id="three" class="calc-button bg-gray-600 hover:bg-gray-500 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                3
+            </button>
+            <button id="add" class="calc-button bg-orange-500 hover:bg-orange-400 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                +
+            </button>
+
+            <!-- Row 5: 0 (spans 2 columns), ., = -->
+            <button id="zero" class="calc-button bg-gray-600 hover:bg-gray-500 text-white font-bold py-4 px-4 rounded-lg text-lg col-span-2">
+                0
+            </button>
+            <button id="decimal" class="calc-button bg-gray-600 hover:bg-gray-500 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                .
+            </button>
+            <button id="equals" class="calc-button bg-orange-500 hover:bg-orange-400 text-white font-bold py-4 px-4 rounded-lg text-lg">
+                =
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

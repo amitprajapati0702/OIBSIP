@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amit Prajapati | Cloud Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="loading-screen">
+        <div class="loading-content">
+            <h1>Amit Prajapati</h1>
+            <div class="cloud-container">
+                <div class="cloud"></div>
+                <div class="cloud"></div>
+                <div class="cloud"></div>
+            </div>
+            <div class="loading-bar-container">
+                <div class="loading-bar"></div>
+            </div>
+            <p class="loading-text">Entering Cloud Portfolio...</p>
+        </div>
+    </div>
+
+    <div class="name-banner">
+        <h1>Amit Prajapati</h1>
+        <p>MCA Student & Software Developer</p>
+    </div>
+
+    <!-- Innovative Popup Introduction Box -->
+    <div class="popup-box" id="introPopup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h2>🚀 WELCOME TO MY DIGITAL UNIVERSE 🚀</h2>
+                <button class="close-btn" id="closePopup" onclick="document.getElementById('introPopup').classList.remove('show');">CLOSE</button>
+            </div>
+            <div class="popup-body">
+                <div class="profile-container">
+                    <img src="https://ui-avatars.com/api/?name=Amit+Prajapati&size=128&background=2c3e50&color=fff" alt="Amit Prajapati" class="profile-img">
+                    <div class="profile-glow"></div>
+                </div>
+                <h3 class="glitch-text" data-text="Amit Prajapati">Amit Prajapati</h3>
+                <p class="popup-subtitle">MCA Student & Software Developer</p>
+
+                <div class="typing-container">
+                    <p class="typing-text"></p>
+                </div>
+
+                <div class="skill-tags">
+                    <span class="skill-tag">PHP</span>
+                    <span class="skill-tag">Java</span>
+                    <span class="skill-tag">C#</span>
+                    <span class="skill-tag">SQL</span>
+                    <span class="skill-tag">MongoDB</span>
+                    <span class="skill-tag">JavaScript</span>
+                </div>
+
+                <div class="popup-social">
+                    <a href="https://www.linkedin.com/in/amit-prajapati-b1b69032a" target="_blank" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/amitprajapati0702" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+                    <a href="mailto:amitsprajapati123@gmail.com" class="social-icon"><i class="fas fa-envelope"></i></a>
+                </div>
+
+                <button class="explore-btn" id="exploreBtn" onclick="document.getElementById('introPopup').classList.remove('show');">
+                    <span class="btn-text">LAUNCH EXPERIENCE</span>
+                    <span class="btn-icon"><i class="fas fa-rocket"></i></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-panel">
+        <div class="info-content">
+            <h2 class="section-title">Welcome to My Cloud</h2>
+            <div class="section-content"></div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" data-section="about"><i class="fas fa-user"></i> About</button>
+        <button class="nav-btn" data-section="education"><i class="fas fa-graduation-cap"></i> Education</button>
+        <button class="nav-btn" data-section="projects"><i class="fas fa-code"></i> Projects</button>
+        <button class="nav-btn" data-section="skills"><i class="fas fa-cogs"></i> Skills</button>
+        <button class="nav-btn" data-section="contact"><i class="fas fa-envelope"></i> Contact</button>
+    </div>
+
+    <div class="theme-toggle">
+        <button id="themeToggle" title="Toggle Dark/Light Theme">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <canvas class="webgl"></canvas>
+
+    <!-- Three.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/FontLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/TextGeometry.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+
+
+    <script type="module">
+        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.module.js';
+        import { FontLoader } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/FontLoader.js';
+        import { TextGeometry } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/geometries/TextGeometry.js';
+
+        // Your 3D text creation logic here...
+      </script>
+
+
+    <!-- Feature modules -->
+    <script src="particles.js"></script>
+    <script src="models.js"></script>
+    <script src="lighting.js"></script>
+    <script src="transitions.js"></script>
+    <script src="voice.js"></script>
+    <script src="timeline.js"></script>
+    <script src="card-flip.js"></script>
+    <script src="skills-chart.js"></script>
+    <script src="accessibility.js"></script>
+
+    <!-- Main script -->
+    <script src="script.js"></script>
+</body>
+</html>

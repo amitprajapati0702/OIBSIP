@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="converter-card">
+            <div class="header">
+                <i class="fas fa-thermometer-half"></i>
+                <h1>Temperature Converter</h1>
+                <p>Convert between Celsius, Fahrenheit, and Kelvin</p>
+            </div>
+
+            <div class="converter-form">
+                <div class="input-group">
+                    <label for="temperature-input">Enter Temperature</label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="number" 
+                            id="temperature-input" 
+                            placeholder="Enter temperature value"
+                            step="any"
+                            autocomplete="off"
+                        >
+                        <i class="fas fa-temperature-low input-icon"></i>
+                    </div>
+                    <div class="error-message" id="input-error"></div>
+                </div>
+
+                <div class="conversion-selectors">
+                    <div class="selector-group">
+                        <label for="from-unit">From</label>
+                        <div class="select-wrapper">
+                            <select id="from-unit">
+                                <option value="celsius">Celsius (°C)</option>
+                                <option value="fahrenheit">Fahrenheit (°F)</option>
+                                <option value="kelvin">Kelvin (K)</option>
+                            </select>
+                            <i class="fas fa-chevron-down select-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="swap-button" id="swap-units" title="Swap units">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+
+                    <div class="selector-group">
+                        <label for="to-unit">To</label>
+                        <div class="select-wrapper">
+                            <select id="to-unit">
+                                <option value="fahrenheit">Fahrenheit (°F)</option>
+                                <option value="celsius">Celsius (°C)</option>
+                                <option value="kelvin">Kelvin (K)</option>
+                            </select>
+                            <i class="fas fa-chevron-down select-icon"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="convert-btn" id="convert-btn">
+                    <i class="fas fa-calculator"></i>
+                    Convert Temperature
+                </button>
+
+                <div class="result-section" id="result-section">
+                    <div class="result-card">
+                        <div class="result-header">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Conversion Result</span>
+                        </div>
+                        <div class="result-value" id="result-value">
+                            <!-- Result will be displayed here -->
+                        </div>
+                        <div class="result-formula" id="result-formula">
+                            <!-- Formula will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-conversions">
+                <h3>Quick Reference</h3>
+                <div class="reference-grid">
+                    <div class="reference-item">
+                        <span class="ref-label">Water Freezes</span>
+                        <span class="ref-values">0°C = 32°F = 273.15K</span>
+                    </div>
+                    <div class="reference-item">
+                        <span class="ref-label">Room Temperature</span>
+                        <span class="ref-values">20°C = 68°F = 293.15K</span>
+                    </div>
+                    <div class="reference-item">
+                        <span class="ref-label">Water Boils</span>
+                        <span class="ref-values">100°C = 212°F = 373.15K</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

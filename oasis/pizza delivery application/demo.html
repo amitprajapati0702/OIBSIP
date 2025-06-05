@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Delivery Application - Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .pizza-base {
+            background: linear-gradient(45deg, #f4a261, #e76f51);
+        }
+        .pizza-sauce {
+            background: linear-gradient(45deg, #e63946, #d62828);
+        }
+        .pizza-cheese {
+            background: linear-gradient(45deg, #f1c40f, #f39c12);
+        }
+        .pizza-toppings {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-orange-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold">🍕 Pizza Delivery</h1>
+                <nav class="space-x-4">
+                    <button class="bg-orange-700 px-4 py-2 rounded hover:bg-orange-800">Login</button>
+                    <button class="bg-white text-orange-600 px-4 py-2 rounded hover:bg-gray-100">Register</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-orange-500 to-red-500 text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-4">Build Your Perfect Pizza</h2>
+            <p class="text-xl mb-8">Customize every ingredient to create your dream pizza</p>
+            <button class="bg-white text-orange-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100 transition">
+                Start Building 🍕
+            </button>
+        </div>
+    </section>
+
+    <!-- Pizza Builder Demo -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <h3 class="text-3xl font-bold text-center mb-12">Pizza Customization Flow</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Step 1: Base -->
+                <div class="bg-white rounded-lg shadow-lg p-6 pizza-base text-white">
+                    <h4 class="text-xl font-bold mb-4">1. Choose Base</h4>
+                    <ul class="space-y-2">
+                        <li>🥖 Thin Crust</li>
+                        <li>🍞 Thick Crust</li>
+                        <li>🌾 Whole Wheat</li>
+                        <li>🚫 Gluten Free</li>
+                        <li>🧀 Stuffed Crust</li>
+                    </ul>
+                </div>
+
+                <!-- Step 2: Sauce -->
+                <div class="bg-white rounded-lg shadow-lg p-6 pizza-sauce text-white">
+                    <h4 class="text-xl font-bold mb-4">2. Select Sauce</h4>
+                    <ul class="space-y-2">
+                        <li>🍅 Classic Tomato</li>
+                        <li>🌿 Pesto</li>
+                        <li>🔥 BBQ Sauce</li>
+                        <li>🥛 White Sauce</li>
+                        <li>🌶️ Spicy Marinara</li>
+                    </ul>
+                </div>
+
+                <!-- Step 3: Cheese -->
+                <div class="bg-white rounded-lg shadow-lg p-6 pizza-cheese text-white">
+                    <h4 class="text-xl font-bold mb-4">3. Pick Cheese</h4>
+                    <ul class="space-y-2">
+                        <li>🧀 Mozzarella</li>
+                        <li>🧀 Cheddar</li>
+                        <li>🧀 Parmesan</li>
+                        <li>🧀 Extra Cheese</li>
+                        <li>🧀 Cheese Blend</li>
+                    </ul>
+                </div>
+
+                <!-- Step 4: Toppings -->
+                <div class="bg-white rounded-lg shadow-lg p-6 pizza-toppings text-white">
+                    <h4 class="text-xl font-bold mb-4">4. Add Toppings</h4>
+                    <ul class="space-y-2">
+                        <li>🫑 Bell Peppers</li>
+                        <li>🍄 Mushrooms</li>
+                        <li>🧅 Red Onions</li>
+                        <li>🫒 Black Olives</li>
+                        <li>🥓 Pepperoni</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="bg-gray-100 py-16">
+        <div class="container mx-auto px-4">
+            <h3 class="text-3xl font-bold text-center mb-12">Application Features</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Authentication -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <div class="text-center mb-4">
+                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                            <span class="text-2xl">🔐</span>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-center">Complete Authentication</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>✅ User Registration & Login</li>
+                        <li>✅ Email Verification</li>
+                        <li>✅ Forgot Password</li>
+                        <li>✅ Admin & User Roles</li>
+                        <li>✅ JWT Security</li>
+                    </ul>
+                </div>
+
+                <!-- Payment -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <div class="text-center mb-4">
+                        <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                            <span class="text-2xl">💳</span>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-center">Razorpay Integration</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>✅ Test Mode Setup</li>
+                        <li>✅ Payment Verification</li>
+                        <li>✅ Order Confirmation</li>
+                        <li>✅ Payment Status Tracking</li>
+                        <li>✅ Secure Transactions</li>
+                    </ul>
+                </div>
+
+                <!-- Admin Dashboard -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <div class="text-center mb-4">
+                        <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                            <span class="text-2xl">📊</span>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-center">Admin Management</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>✅ Order Management</li>
+                        <li>✅ Inventory Control</li>
+                        <li>✅ User Management</li>
+                        <li>✅ Analytics Dashboard</li>
+                        <li>✅ Real-time Updates</li>
+                    </ul>
+                </div>
+
+                <!-- Real-time Features -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <div class="text-center mb-4">
+                        <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                            <span class="text-2xl">⚡</span>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-center">Real-time Updates</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>✅ Live Order Tracking</li>
+                        <li>✅ Socket.io Integration</li>
+                        <li>✅ Status Notifications</li>
+                        <li>✅ Admin Alerts</li>
+                        <li>✅ Instant Updates</li>
+                    </ul>
+                </div>
+
+                <!-- Email System -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <div class="text-center mb-4">
+                        <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                            <span class="text-2xl">📧</span>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-center">Email Notifications</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>✅ Order Confirmations</li>
+                        <li>✅ Status Updates</li>
+                        <li>✅ Low Stock Alerts</li>
+                        <li>✅ Welcome Emails</li>
+                        <li>✅ Automated System</li>
+                    </ul>
+                </div>
+
+                <!-- Inventory -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <div class="text-center mb-4">
+                        <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                            <span class="text-2xl">📦</span>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-center">Smart Inventory</h4>
+                    <ul class="text-sm space-y-1">
+                        <li>✅ Stock Management</li>
+                        <li>✅ Threshold Alerts</li>
+                        <li>✅ Auto Deduction</li>
+                        <li>✅ Category Tracking</li>
+                        <li>✅ CRUD Operations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Flow Demo -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <h3 class="text-3xl font-bold text-center mb-12">Order Status Flow</h3>
+            
+            <div class="flex flex-wrap justify-center items-center space-x-4 space-y-4">
+                <div class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full font-semibold">
+                    📝 Order Received
+                </div>
+                <div class="text-2xl">→</div>
+                <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full font-semibold">
+                    👨‍🍳 In the Kitchen
+                </div>
+                <div class="text-2xl">→</div>
+                <div class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full font-semibold">
+                    🔥 Baking
+                </div>
+                <div class="text-2xl">→</div>
+                <div class="bg-green-100 text-green-800 px-4 py-2 rounded-full font-semibold">
+                    🚚 Sent to Delivery
+                </div>
+                <div class="text-2xl">→</div>
+                <div class="bg-green-200 text-green-900 px-4 py-2 rounded-full font-semibold">
+                    ✅ Delivered
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-4">
+            <h3 class="text-3xl font-bold text-center mb-12">Technology Stack</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4 text-orange-400">Frontend</h4>
+                    <ul class="space-y-2">
+                        <li>⚛️ React 19 with Hooks</li>
+                        <li>🎨 Tailwind CSS</li>
+                        <li>🔄 React Router DOM</li>
+                        <li>⚡ Socket.io Client</li>
+                        <li>📡 Axios for API calls</li>
+                        <li>🔔 React Hot Toast</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold mb-4 text-orange-400">Backend</h4>
+                    <ul class="space-y-2">
+                        <li>🟢 Node.js + Express</li>
+                        <li>🍃 MongoDB + Mongoose</li>
+                        <li>🔐 JWT Authentication</li>
+                        <li>⚡ Socket.io</li>
+                        <li>📧 Nodemailer</li>
+                        <li>⏰ Node-cron</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-orange-600 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <h4 class="text-xl font-bold mb-4">🍕 Complete Pizza Delivery Application</h4>
+            <p class="mb-4">Full-stack application with React, Node.js, MongoDB, and Tailwind CSS</p>
+            <div class="space-x-4">
+                <span class="bg-orange-700 px-3 py-1 rounded">✅ Authentication</span>
+                <span class="bg-orange-700 px-3 py-1 rounded">✅ Payment Gateway</span>
+                <span class="bg-orange-700 px-3 py-1 rounded">✅ Real-time Updates</span>
+                <span class="bg-orange-700 px-3 py-1 rounded">✅ Admin Dashboard</span>
+                <span class="bg-orange-700 px-3 py-1 rounded">✅ Email System</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple demo interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click animations
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                });
+            });
+
+            // Show alert for demo
+            const startButton = document.querySelector('button[class*="bg-white text-orange-600"]');
+            if (startButton) {
+                startButton.addEventListener('click', function() {
+                    alert('🍕 Pizza Builder Demo!\n\nThis is a demonstration of the complete pizza delivery application.\n\nFeatures implemented:\n✅ Complete Authentication System\n✅ Pizza Customization Flow\n✅ Razorpay Payment Integration\n✅ Admin Dashboard\n✅ Real-time Order Tracking\n✅ Email Notifications\n✅ Inventory Management\n✅ Responsive Design');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

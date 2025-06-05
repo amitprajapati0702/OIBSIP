@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍕 Pizza Delivery - Live Application</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <style>
+        .pizza-visual {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #f4a261, #e76f51);
+            position: relative;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .pizza-topping {
+            position: absolute;
+            border-radius: 50%;
+            background: #27ae60;
+            width: 20px;
+            height: 20px;
+        }
+        .loading {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Notification Area -->
+    <div id="notifications" class="notification"></div>
+
+    <!-- Header -->
+    <header class="bg-orange-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold">🍕 Pizza Delivery - Live App</h1>
+                <div id="auth-section" class="space-x-4">
+                    <button id="login-btn" class="bg-orange-700 px-4 py-2 rounded hover:bg-orange-800">Login</button>
+                    <button id="register-btn" class="bg-white text-orange-600 px-4 py-2 rounded hover:bg-gray-100">Register</button>
+                    <div id="user-info" class="hidden">
+                        <span id="user-name" class="mr-4"></span>
+                        <button id="logout-btn" class="bg-orange-700 px-4 py-2 rounded hover:bg-orange-800">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Connection Status -->
+        <div id="connection-status" class="mb-6 p-4 rounded-lg bg-blue-100 text-blue-800">
+            <div class="flex items-center">
+                <div id="status-indicator" class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+                <span id="status-text">Connecting to server...</span>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login-form" class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
+            <form id="login-form-element">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                    <input type="email" id="login-email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-orange-500" placeholder="admin@pizzadelivery.com" value="admin@pizzadelivery.com">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                    <input type="password" id="login-password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-orange-500" placeholder="Password" value="admin123">
+                </div>
+                <button type="submit" class="w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700">
+                    <span id="login-spinner" class="hidden">🔄</span>
+                    Login
+                </button>
+            </form>
+            <p class="text-sm text-gray-600 mt-4 text-center">
+                Demo Credentials: admin@pizzadelivery.com / admin123
+            </p>
+        </div>
+
+        <!-- Pizza Builder -->
+        <div id="pizza-builder" class="hidden">
+            <h2 class="text-3xl font-bold text-center mb-8">🍕 Build Your Perfect Pizza</h2>
+            
+            <!-- Pizza Visual -->
+            <div class="text-center mb-8">
+                <div class="pizza-visual" id="pizza-visual">
+                    <div class="pizza-topping" style="top: 30%; left: 40%;"></div>
+                    <div class="pizza-topping" style="top: 60%; left: 30%; background: #e74c3c;"></div>
+                    <div class="pizza-topping" style="top: 50%; left: 60%; background: #f39c12;"></div>
+                </div>
+                <p class="text-lg font-semibold" id="pizza-price">Total: ₹0</p>
+            </div>
+
+            <!-- Pizza Options -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Base Selection -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-bold mb-4">🥖 Pizza Base</h3>
+                    <select id="base-select" class="w-full p-2 border rounded">
+                        <option value="">Select Base</option>
+                        <option value="thin-crust" data-price="150">Thin Crust - ₹150</option>
+                        <option value="thick-crust" data-price="180">Thick Crust - ₹180</option>
+                        <option value="whole-wheat" data-price="200">Whole Wheat - ₹200</option>
+                        <option value="gluten-free" data-price="250">Gluten Free - ₹250</option>
+                        <option value="stuffed-crust" data-price="300">Stuffed Crust - ₹300</option>
+                    </select>
+                </div>
+
+                <!-- Sauce Selection -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-bold mb-4">🍅 Sauce</h3>
+                    <select id="sauce-select" class="w-full p-2 border rounded">
+                        <option value="">Select Sauce</option>
+                        <option value="tomato" data-price="50">Classic Tomato - ₹50</option>
+                        <option value="pesto" data-price="80">Pesto - ₹80</option>
+                        <option value="bbq" data-price="70">BBQ Sauce - ₹70</option>
+                        <option value="white" data-price="90">White Sauce - ₹90</option>
+                        <option value="spicy" data-price="60">Spicy Marinara - ₹60</option>
+                    </select>
+                </div>
+
+                <!-- Cheese Selection -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-bold mb-4">🧀 Cheese</h3>
+                    <select id="cheese-select" class="w-full p-2 border rounded">
+                        <option value="">Select Cheese</option>
+                        <option value="mozzarella" data-price="100">Mozzarella - ₹100</option>
+                        <option value="cheddar" data-price="120">Cheddar - ₹120</option>
+                        <option value="parmesan" data-price="150">Parmesan - ₹150</option>
+                    </select>
+                </div>
+
+                <!-- Size Selection -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-bold mb-4">📏 Size</h3>
+                    <select id="size-select" class="w-full p-2 border rounded">
+                        <option value="">Select Size</option>
+                        <option value="small" data-multiplier="1">Small (8") - 1x</option>
+                        <option value="medium" data-multiplier="1.5">Medium (10") - 1.5x</option>
+                        <option value="large" data-multiplier="2">Large (12") - 2x</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Toppings -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-lg font-bold mb-4">🥬 Toppings</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="topping-checkbox mr-2" data-price="30" value="bell-peppers">
+                        <span>🫑 Bell Peppers (+₹30)</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" class="topping-checkbox mr-2" data-price="40" value="mushrooms">
+                        <span>🍄 Mushrooms (+₹40)</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" class="topping-checkbox mr-2" data-price="25" value="onions">
+                        <span>🧅 Red Onions (+₹25)</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" class="topping-checkbox mr-2" data-price="35" value="olives">
+                        <span>🫒 Black Olives (+₹35)</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" class="topping-checkbox mr-2" data-price="80" value="pepperoni">
+                        <span>🥓 Pepperoni (+₹80)</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" class="topping-checkbox mr-2" data-price="90" value="chicken">
+                        <span>🍗 Chicken (+₹90)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Order Button -->
+            <div class="text-center">
+                <button id="place-order-btn" class="bg-orange-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-orange-700 disabled:bg-gray-400" disabled>
+                    Place Order - ₹0
+                </button>
+            </div>
+        </div>
+
+        <!-- Orders Section -->
+        <div id="orders-section" class="hidden mt-12">
+            <h2 class="text-2xl font-bold mb-6">📋 Your Orders</h2>
+            <div id="orders-list" class="space-y-4">
+                <!-- Orders will be populated here -->
+            </div>
+        </div>
+
+        <!-- Admin Section -->
+        <div id="admin-section" class="hidden mt-12">
+            <h2 class="text-2xl font-bold mb-6">👨‍💼 Admin Dashboard</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-bold mb-4">📊 Statistics</h3>
+                    <div id="admin-stats">
+                        <p>Total Orders: <span id="total-orders">0</span></p>
+                        <p>Revenue: ₹<span id="total-revenue">0</span></p>
+                        <p>Active Orders: <span id="active-orders">0</span></p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-bold mb-4">🔔 Notifications</h3>
+                    <div id="admin-notifications" class="text-sm">
+                        <p class="text-gray-600">No new notifications</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-bold mb-4">⚡ Actions</h3>
+                    <button id="trigger-stock-check" class="w-full bg-blue-600 text-white py-2 rounded mb-2 hover:bg-blue-700">
+                        Check Stock Levels
+                    </button>
+                    <button id="view-inventory" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
+                        View Inventory
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Application State
+        let currentUser = null;
+        let socket = null;
+        let currentOrder = {
+            base: null,
+            sauce: null,
+            cheese: null,
+            size: null,
+            toppings: [],
+            price: 0
+        };
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            connectToServer();
+        });
+
+        function initializeApp() {
+            // Check for stored auth token
+            const token = localStorage.getItem('token');
+            if (token) {
+                // Validate token with server
+                validateToken(token);
+            }
+        }
+
+        function setupEventListeners() {
+            // Auth buttons
+            document.getElementById('login-btn').addEventListener('click', showLoginForm);
+            document.getElementById('logout-btn').addEventListener('click', logout);
+            document.getElementById('login-form-element').addEventListener('submit', handleLogin);
+
+            // Pizza builder
+            document.getElementById('base-select').addEventListener('change', updatePizza);
+            document.getElementById('sauce-select').addEventListener('change', updatePizza);
+            document.getElementById('cheese-select').addEventListener('change', updatePizza);
+            document.getElementById('size-select').addEventListener('change', updatePizza);
+            
+            document.querySelectorAll('.topping-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', updatePizza);
+            });
+
+            document.getElementById('place-order-btn').addEventListener('click', placeOrder);
+
+            // Admin actions
+            document.getElementById('trigger-stock-check').addEventListener('click', triggerStockCheck);
+        }
+
+        function connectToServer() {
+            try {
+                socket = io('http://localhost:5000');
+                
+                socket.on('connect', () => {
+                    updateConnectionStatus('Connected to server', 'success');
+                    showNotification('Connected to Pizza Delivery Server! 🍕', 'success');
+                });
+
+                socket.on('disconnect', () => {
+                    updateConnectionStatus('Disconnected from server', 'error');
+                });
+
+                socket.on('order-update', (data) => {
+                    showNotification(`Order #${data.orderNumber} status: ${data.status}`, 'info');
+                    updateOrdersList();
+                });
+
+                socket.on('new-order-notification', (data) => {
+                    if (currentUser && currentUser.role === 'admin') {
+                        showNotification(`New order received: #${data.orderNumber}`, 'info');
+                        updateAdminStats();
+                    }
+                });
+
+            } catch (error) {
+                updateConnectionStatus('Failed to connect to server', 'error');
+                console.error('Socket connection error:', error);
+            }
+        }
+
+        function updateConnectionStatus(message, type) {
+            const statusElement = document.getElementById('status-text');
+            const indicatorElement = document.getElementById('status-indicator');
+            
+            statusElement.textContent = message;
+            
+            if (type === 'success') {
+                indicatorElement.className = 'w-3 h-3 rounded-full bg-green-500 mr-2';
+            } else if (type === 'error') {
+                indicatorElement.className = 'w-3 h-3 rounded-full bg-red-500 mr-2';
+            } else {
+                indicatorElement.className = 'w-3 h-3 rounded-full bg-yellow-500 mr-2';
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+            
+            notification.className = `${bgColor} text-white px-4 py-2 rounded-lg mb-2 shadow-lg`;
+            notification.textContent = message;
+            
+            document.getElementById('notifications').appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    currentUser = data.user;
+                    updateUI();
+                    showNotification(`Welcome back, ${data.user.name}! 🎉`, 'success');
+                } else {
+                    showNotification(data.message || 'Login failed', 'error');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showNotification('Connection error. Please try again.', 'error');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            currentUser = null;
+            updateUI();
+            showNotification('Logged out successfully', 'info');
+        }
+
+        function updateUI() {
+            const loginForm = document.getElementById('login-form');
+            const pizzaBuilder = document.getElementById('pizza-builder');
+            const ordersSection = document.getElementById('orders-section');
+            const adminSection = document.getElementById('admin-section');
+            const userInfo = document.getElementById('user-info');
+            const authButtons = document.querySelector('#auth-section > button');
+
+            if (currentUser) {
+                loginForm.classList.add('hidden');
+                pizzaBuilder.classList.remove('hidden');
+                ordersSection.classList.remove('hidden');
+                userInfo.classList.remove('hidden');
+                document.getElementById('user-name').textContent = currentUser.name;
+                
+                if (currentUser.role === 'admin') {
+                    adminSection.classList.remove('hidden');
+                    updateAdminStats();
+                }
+                
+                updateOrdersList();
+            } else {
+                loginForm.classList.remove('hidden');
+                pizzaBuilder.classList.add('hidden');
+                ordersSection.classList.add('hidden');
+                adminSection.classList.add('hidden');
+                userInfo.classList.add('hidden');
+            }
+        }
+
+        function updatePizza() {
+            let totalPrice = 0;
+            let sizeMultiplier = 1;
+
+            // Get base price
+            const baseSelect = document.getElementById('base-select');
+            if (baseSelect.value) {
+                const basePrice = parseInt(baseSelect.selectedOptions[0].dataset.price);
+                totalPrice += basePrice;
+                currentOrder.base = baseSelect.value;
+            }
+
+            // Get sauce price
+            const sauceSelect = document.getElementById('sauce-select');
+            if (sauceSelect.value) {
+                const saucePrice = parseInt(sauceSelect.selectedOptions[0].dataset.price);
+                totalPrice += saucePrice;
+                currentOrder.sauce = sauceSelect.value;
+            }
+
+            // Get cheese price
+            const cheeseSelect = document.getElementById('cheese-select');
+            if (cheeseSelect.value) {
+                const cheesePrice = parseInt(cheeseSelect.selectedOptions[0].dataset.price);
+                totalPrice += cheesePrice;
+                currentOrder.cheese = cheeseSelect.value;
+            }
+
+            // Get size multiplier
+            const sizeSelect = document.getElementById('size-select');
+            if (sizeSelect.value) {
+                sizeMultiplier = parseFloat(sizeSelect.selectedOptions[0].dataset.multiplier);
+                currentOrder.size = sizeSelect.value;
+            }
+
+            // Get toppings price
+            const toppings = [];
+            document.querySelectorAll('.topping-checkbox:checked').forEach(checkbox => {
+                const toppingPrice = parseInt(checkbox.dataset.price);
+                totalPrice += toppingPrice;
+                toppings.push(checkbox.value);
+            });
+            currentOrder.toppings = toppings;
+
+            // Apply size multiplier
+            totalPrice = Math.round(totalPrice * sizeMultiplier);
+            currentOrder.price = totalPrice;
+
+            // Update UI
+            document.getElementById('pizza-price').textContent = `Total: ₹${totalPrice}`;
+            
+            const orderBtn = document.getElementById('place-order-btn');
+            orderBtn.textContent = `Place Order - ₹${totalPrice}`;
+            orderBtn.disabled = totalPrice === 0 || !currentOrder.base || !currentOrder.sauce || !currentOrder.cheese || !currentOrder.size;
+        }
+
+        async function placeOrder() {
+            if (!currentUser) {
+                showNotification('Please login to place an order', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/api/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        items: [{
+                            type: 'custom-pizza',
+                            customizations: currentOrder,
+                            quantity: 1,
+                            price: currentOrder.price
+                        }],
+                        totalAmount: currentOrder.price,
+                        deliveryAddress: {
+                            street: '123 Demo Street',
+                            city: 'Demo City',
+                            state: 'Demo State',
+                            zipCode: '123456'
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showNotification(`Order placed successfully! Order #${data.data.order.orderNumber}`, 'success');
+                    resetPizzaBuilder();
+                    updateOrdersList();
+                } else {
+                    showNotification(data.message || 'Failed to place order', 'error');
+                }
+            } catch (error) {
+                console.error('Order error:', error);
+                showNotification('Failed to place order. Please try again.', 'error');
+            }
+        }
+
+        function resetPizzaBuilder() {
+            document.getElementById('base-select').value = '';
+            document.getElementById('sauce-select').value = '';
+            document.getElementById('cheese-select').value = '';
+            document.getElementById('size-select').value = '';
+            document.querySelectorAll('.topping-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            currentOrder = { base: null, sauce: null, cheese: null, size: null, toppings: [], price: 0 };
+            updatePizza();
+        }
+
+        async function updateOrdersList() {
+            if (!currentUser) return;
+
+            try {
+                const response = await fetch('http://localhost:5000/api/orders/user', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    const ordersList = document.getElementById('orders-list');
+                    ordersList.innerHTML = '';
+
+                    if (data.data.orders.length === 0) {
+                        ordersList.innerHTML = '<p class="text-gray-600">No orders yet. Place your first order!</p>';
+                        return;
+                    }
+
+                    data.data.orders.forEach(order => {
+                        const orderElement = document.createElement('div');
+                        orderElement.className = 'bg-white rounded-lg shadow-lg p-4';
+                        orderElement.innerHTML = `
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h3 class="font-bold">Order #${order.orderNumber}</h3>
+                                    <p class="text-gray-600">₹${order.totalAmount} • ${order.items.length} item(s)</p>
+                                    <p class="text-sm text-gray-500">${new Date(order.createdAt).toLocaleString()}</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(order.status)}">
+                                        ${order.status.replace('-', ' ').toUpperCase()}
+                                    </span>
+                                </div>
+                            </div>
+                        `;
+                        ordersList.appendChild(orderElement);
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching orders:', error);
+            }
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                'pending': 'bg-yellow-100 text-yellow-800',
+                'confirmed': 'bg-blue-100 text-blue-800',
+                'preparing': 'bg-orange-100 text-orange-800',
+                'baking': 'bg-purple-100 text-purple-800',
+                'ready': 'bg-green-100 text-green-800',
+                'out-for-delivery': 'bg-indigo-100 text-indigo-800',
+                'delivered': 'bg-green-200 text-green-900',
+                'cancelled': 'bg-red-100 text-red-800'
+            };
+            return colors[status] || 'bg-gray-100 text-gray-800';
+        }
+
+        async function updateAdminStats() {
+            if (!currentUser || currentUser.role !== 'admin') return;
+
+            try {
+                const response = await fetch('http://localhost:5000/api/admin/dashboard', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('total-orders').textContent = data.data.totalOrders || 0;
+                    document.getElementById('total-revenue').textContent = data.data.totalRevenue || 0;
+                    document.getElementById('active-orders').textContent = data.data.activeOrders || 0;
+                }
+            } catch (error) {
+                console.error('Error fetching admin stats:', error);
+            }
+        }
+
+        async function triggerStockCheck() {
+            try {
+                const response = await fetch('http://localhost:5000/api/admin/trigger-stock-check', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    showNotification('Stock check triggered successfully!', 'success');
+                } else {
+                    showNotification('Failed to trigger stock check', 'error');
+                }
+            } catch (error) {
+                console.error('Error triggering stock check:', error);
+                showNotification('Error triggering stock check', 'error');
+            }
+        }
+
+        function showLoginForm() {
+            document.getElementById('login-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function validateToken(token) {
+            try {
+                const response = await fetch('http://localhost:5000/api/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    currentUser = data.data.user;
+                    updateUI();
+                } else {
+                    localStorage.removeItem('token');
+                }
+            } catch (error) {
+                console.error('Token validation error:', error);
+                localStorage.removeItem('token');
+            }
+        }
+    </script>
+</body>
+</html>
